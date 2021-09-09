@@ -177,7 +177,7 @@ def render_updated_flow(instance_id, flow_name):
 
             dependency_arn = content['Actions'][index]['Parameters']['LambdaFunctionARN']
             function_name = dependency_arn.split(':')[-1]
-            updated_dependency_arn = 'arn:aws:lambda:us-east-1:{}:function:{}'.format(ACCOUNT_ID, function_name)
+            updated_dependency_arn = 'arn:aws:lambda:{}:{}:function:{}'.format(REGION,ACCOUNT_ID, function_name)
             content['Actions'][index]['Parameters']['LambdaFunctionARN']=updated_dependency_arn
 
         if 'Parameters' in action.keys() and 'PromptId' in action['Parameters'].keys() and 'LexBot' not in action['Parameters'].keys() :
@@ -186,7 +186,11 @@ def render_updated_flow(instance_id, flow_name):
             updated_prompt_id = prompts[prompt_name]
             updated_prompt_arn = 'arn:aws:connect:{}:{}:instance/{}/prompt/{}'.format(REGION, ACCOUNT_ID, instance_id, updated_prompt_id)
             content['Actions'][index]['Parameters']['PromptId']=updated_prompt_arn
-
+        
+        if 'Parameters' in action.keys() and 'LexBot' in action['Parameters'].keys() :
+#
+            content['Actions'][index]['Parameters']['LexBot']['Region']=REGION
+#
         index += 1
 
     return content
@@ -370,6 +374,7 @@ def lambda_handler(event, context):
     if event['RequestType'] == 'Create':
         import_flows(CONNECT_INSTANCE_ID)
         update_bot_access(CONNECT_INSTANCE_ID)
+        responseData = {}
 
         send(event, context, SUCCESS, responseData, context.invoked_function_arn)
 

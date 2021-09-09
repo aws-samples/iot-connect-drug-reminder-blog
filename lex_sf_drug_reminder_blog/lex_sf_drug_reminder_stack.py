@@ -137,22 +137,7 @@ class LexSFDCDrugReminderStack(core.Stack):
         # todo https://www.salesforcetutorial.com/creating-custom-fields-in-salesforcce/
         patient_table.grant_write_data(fetch_lambda)
 
-        # lex_sf_drug_reminder_blog/_lambda/functions/customer_calling
-        customer_calling_lambda = lambda_python.PythonFunction(self, 'CustomerCallingLambda',
-                                                               entry='./lex_sf_drug_reminder_blog/_lambda/functions/customer_calling',
-                                                               index='lambda_function.py',
-                                                               handler='lambda_handler',
-                                                               runtime=_lambda.Runtime.PYTHON_3_8,
-                                                               timeout=core.Duration.minutes(2),
-                                                               environment={"LOG_LEVEL": "DEBUG",
-                                                                            "PATIENT_RECORDS": patient_table.table_name
-                                                                            })
-
-        customer_calling_lambda.add_event_source(aws_lambda_event_sources.DynamoEventSource(
-            table=patient_table,
-            starting_position=_lambda.StartingPosition.TRIM_HORIZON
-        ))
-        patient_table.grant_read_write_data(customer_calling_lambda)
+       
         lex_fulfilment_lambda = lambda_python.PythonFunction(self, 'SFDCUpdateLambda',
                                                              entry='./lex_sf_drug_reminder_blog/_lambda/functions/lex_fulfillment',
                                                              index='lambda_function.py',
@@ -196,7 +181,7 @@ class LexSFDCDrugReminderStack(core.Stack):
                                                                                                "lex:DeleteIntent",
                                                                                                "lex:DeleteSlotType",
                                                                                                "lex:StartImport",
-                                                                                               "lex:GetImport"
+                                                                                               "lex:GetImport","lex:*"
                                                                                                ],
                                                                                       effect=aws_iam.Effect.ALLOW,
                                                                                       resources=[
@@ -252,7 +237,8 @@ class LexSFDCDrugReminderStack(core.Stack):
                                                                             # # todo lambda arn?
                                                                             "CONNECT_LAMBDA_ARN": lex_fulfilment_lambda.function_arn,
                                                                             "ACCOUNT_ID": self.account,
-                                                                            "CONNECT_INSTANCE_ID": connectInstanceID.value_as_string})
+                                                                            "CONNECT_INSTANCE_ID": connectInstanceID.value_as_string,
+                                                                            })
         
         connect_operator_lambda_connect_import = aws_iam.PolicyStatement(actions=['lex:*',
                                                                                                'connect:*'],
@@ -263,10 +249,31 @@ class LexSFDCDrugReminderStack(core.Stack):
         connect_operator_lambda_v2.add_permission(id='connect', principal=aws_iam.ServicePrincipal("connect.amazonaws.com"))
         connect_operator_lambda_v2.add_to_role_policy(connect_operator_lambda_connect_import)
 
-        core.CustomResource(self, 'ConnectDeploymentTriggerNew',
+        connect_deployment = core.CustomResource(self, 'ConnectDeploymentTriggerNew',
                             service_token=connect_operator_lambda_v2.function_arn
                             )
+         # lex_sf_drug_reminder_blog/_lambda/functions/customer_calling
+        customer_calling_lambda = lambda_python.PythonFunction(self, 'CustomerCallingLambda',
+                                                               entry='./lex_sf_drug_reminder_blog/_lambda/functions/customer_calling',
+                                                               index='lambda_function.py',
+                                                               handler='lambda_handler',
+                                                               runtime=_lambda.Runtime.PYTHON_3_8,
+                                                               timeout=core.Duration.minutes(2),
+                                                               environment={"LOG_LEVEL": "DEBUG",
+                                                                            "PATIENT_RECORDS": patient_table.table_name,
+                                                                            "CONNECT_INSTANCE_ID": connectInstanceID.value_as_string,
+                                                                            "FLOW_ID": "Upload Flow ID here",
+                                                                            "QueueId": "Upload Queue ID here"
+                                                                            })
 
+        customer_calling_lambda.add_event_source(aws_lambda_event_sources.DynamoEventSource(
+            table=patient_table,
+            starting_position=_lambda.StartingPosition.TRIM_HORIZON
+        ))
+        customer_calling_lambda.add_permission(id='lex', principal=aws_iam.ServicePrincipal("lex.amazonaws.com"))
+        customer_calling_lambda.add_permission(id='connect', principal=aws_iam.ServicePrincipal("connect.amazonaws.com"))
+        customer_calling_lambda.add_to_role_policy(connect_operator_lambda_connect_import)
+        patient_table.grant_read_write_data(customer_calling_lambda)
         # Call the IoT Stack
         IoTStack(self, "iot-resources", project_prefix_obj=project_prefix, time_zone_obj=time_zone,
                  dynamoTable_obj=patient_table)

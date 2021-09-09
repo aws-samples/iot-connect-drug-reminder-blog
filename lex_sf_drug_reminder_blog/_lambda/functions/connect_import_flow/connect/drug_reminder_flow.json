@@ -1,5 +1,5 @@
 {
-    "Arn": "arn:aws:connect:us-east-1:095169193924:instance/0749f44c-8889-4dee-9cd9-70088ff3ff55/contact-flow/451d2c38-833d-438d-8fa2-202ce5393030",
+    "Arn": "arn:aws:connect:us-east-1:0951691xxxxx:instance/0749f44c-8889-4dee-9cd9-70088ff3xxxx/contact-flow/451d2c38-833d-438d-8fa2-202ce539xxxx",
     "Id": "451d2c38-833d-438d-8fa2-202ce5393030",
     "Name": "Drug_Reminder_Test",
     "Type": "CONTACT_FLOW",

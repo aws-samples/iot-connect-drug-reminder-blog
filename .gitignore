@@ -25,3 +25,5 @@ template_joy.yaml
 lex_sf_drug_reminder_blog/_lambda/functions/connect_import_flow/test.py
 test_flows
 lex_sf_drug_reminder_blog/_lambda/functions/connect_import_flow.zip
+sample-mqtt-message.json
+sample-dynamo-record.json

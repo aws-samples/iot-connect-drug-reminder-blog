@@ -10,6 +10,9 @@ import os
 import boto3
 
 LOG_LEVEL = os.getenv("LOG_LEVEL", "WARNING")
+CONNECT_INSTANCE_ID = os.environ['CONNECT_INSTANCE_ID']
+FLOW_ID = os.environ['FLOW_ID']
+QueueId_ENV = os.environ['QueueId']
 
 _logger = logging.getLogger()
 _logger.setLevel(LOG_LEVEL)
@@ -75,10 +78,10 @@ def lambda_handler(event, context):
                 # Dip please make sure that FlowID, InstanceID and QueueID has to be dynamic[update]
                 response = client.start_outbound_voice_contact(
                     DestinationPhoneNumber=Customer_Phone_Number,
-                    ContactFlowId='f35d57b8-8bd4-4238-a7d8-e7c09df7effc',
-                    InstanceId='0749f44c-8889-4dee-9cd9-70088ff3ff55',
+                    ContactFlowId=str(FLOW_ID),
+                    InstanceId=str(CONNECT_INSTANCE_ID),
                     # SourcePhoneNumber='+14084250666',
-                    QueueId='9f6d1193-4cb8-4c55-956e-07a43e5d5d8a',
+                    QueueId=str(QueueId_ENV),
                     Attributes={
                         'Calling_Customer_First_Name': Calling_Customer_First_Name,
                         'Calling_Customer_Last_Name': Calling_Customer_Last_Name,

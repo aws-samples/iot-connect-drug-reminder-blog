@@ -213,6 +213,18 @@ def lambda_handler(event, context):
         else:
             print("put-bot-result: {}".format(put_bot_result))
 
+        try:
+            put_bot_alias_result = client.put_bot_alias(
+                name="live",
+                botVersion=LATEST_ALIAS,
+                botName=bot_name
+            )
+        except ClientError as e:
+            print("put-bot-alias-error: {}".format(e))
+
+        else:
+            print("put-bot-alias-result: {}".format(put_bot_alias_result))
+
         send(event, context, SUCCESS, responseData, context.invoked_function_arn)
 
         # todo if error happens - cloud formation stack is just pending till timeout
