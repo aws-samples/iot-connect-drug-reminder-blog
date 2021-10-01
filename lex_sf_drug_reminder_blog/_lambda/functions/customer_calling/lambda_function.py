@@ -44,11 +44,11 @@ def lambda_handler(event, context):
                         'Customer_Phone_Number': mobile_number
                     }
                 )
-                print(resp)
-                print(type(resp))
-                print(resp.get('Item',{}).get('Customer_Phone_Number'))
+                #print(resp)
+                #print(type(resp))
+                #print(resp.get('Item',{}).get('Customer_Phone_Number'))
                 Customer_Phone_Number = resp.get('Item',{}).get('Customer_Phone_Number')
-                print(Customer_Phone_Number)
+                #print(Customer_Phone_Number)
     
                 columns = ['Calling_Customer_Last_Name','Calling_Customer_First_Name','Customer_SSN_Last4','Customer_DOB','Number_Dosages','Time_Dosage','Name_Dosage,Medicine_Color','Medicine_Shape','Medicine_Size','Medicine_Location','Reminder_Time','MRI_Scan_Date','MRI_Scan_Time','Reminder_Required','Calling_flag','Refill_Required']
                 Item_req = resp['Item']

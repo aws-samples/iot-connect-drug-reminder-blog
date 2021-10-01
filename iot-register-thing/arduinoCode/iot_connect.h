@@ -1,3 +1,6 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+
 #include "secrets.h"
 #include <WiFiClientSecure.h>
 #include <MQTTClient.h>
@@ -58,11 +61,11 @@ void connectAWS()
 void publishMessage()
 {
   StaticJsonDocument<200> doc;
-  DateTime.setTimeZone("EST-8");
   DateTime.begin();
   doc["time"] = DateTime.toISOString().c_str();
-  
   doc["box_close"] = digitalRead(26);
+  doc["Customer_Phone_Number"] = <Customer phone number with country code>;
+  // Example: +1234567890
   char jsonBuffer[512];
   serializeJson(doc, jsonBuffer); // print to client
 
@@ -92,5 +95,5 @@ void loop() {
   client.loop();
   Serial.println("Pin Digital Values");
   Serial.println(digitalRead_value);
-  delay(10000);
+  delay(60000);
 }

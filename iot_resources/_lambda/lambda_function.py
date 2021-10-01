@@ -107,14 +107,12 @@ def lambda_handler(event, context):
     reminder_time_sf_time = list(str(reminder_time_sf[1]).split('.'))[0]
     reminder_time_sf_comp = reminder_time_sf_dt+" "+reminder_time_sf_time
     reminder_time_pre = dt.datetime.fromisoformat(reminder_time_sf_comp)
-    #reminder_time = reminder_time_pre.replace(tzinfo=timezone(str(time_zone)))
     reminder_time = reminder_time_pre.astimezone(pytz.timezone(time_zone))
 
     # Check if current time is withing 5 mins of reminder time
     print(reminder_time)
     print(now_minus_wait_time)
     print(time_in_zone)
-    #print(now)
     modify_dynamo = time_in_range(now_minus_wait_time,time_in_zone,reminder_time)
     print(modify_dynamo)
 

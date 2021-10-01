@@ -1,4 +1,5 @@
-import boto3
+#  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#  SPDX-License-Identifier: MIT-0import boto3
 import json
 import os
 import time
@@ -16,8 +17,6 @@ _logger.setLevel(LOG_LEVEL)
 
 
 FLOWS_DIRECTORY='./connect'
-#FLOW_FILTER_PREFIX='!'
-#BACKUP_PATH='./flows'
 
 ACCOUNT_ID = os.environ['ACCOUNT_ID']
 REGION = os.environ['AWS_REGION']
