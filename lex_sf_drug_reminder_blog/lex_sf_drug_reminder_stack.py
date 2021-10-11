@@ -13,7 +13,6 @@ from aws_cdk import (core,
 
 from iot_resources import IoTStack
 
-# todo change back
 SFDC_DYNAMO_DB_TABLE_NAME = "SFDCPatientTable"
 
 
