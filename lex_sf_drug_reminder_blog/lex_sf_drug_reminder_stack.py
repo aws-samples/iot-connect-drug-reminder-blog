@@ -24,8 +24,7 @@ class LexSFDCDrugReminderStack(core.Stack):
 
         # Cfn parameters
         connectInstanceID = core.CfnParameter(self, "connectInstanceID", type="String",
-                                           description="InstanceID of the Connect Instance in your AWS Account")
-
+                                              description="InstanceID of the Connect Instance in your AWS Account")
 
         project_prefix = core.CfnParameter(self, "projectPrefix", type="String", default='dev',
                                            description="prefix for all the resources in the project")
@@ -51,37 +50,41 @@ class LexSFDCDrugReminderStack(core.Stack):
         sfdc_endpoint = core.CfnParameter(self, 'endpoint',
                                           description='SalesForce api endpoint')
 
-        # todo secret cannot be deleted via CfnSecret
-        # todo use escape hatch to set delete policy
         sfdc_consumer_key_secretsmanager = aws_secretsmanager.CfnSecret(self, 'sfdcconsumerkey{}'.format(construct_id),
                                                                         name='sfdcconsumerkey{}'.format(construct_id),
                                                                         secret_string=sfdc_consumer_key.value_as_string)
+        sfdc_consumer_key_secretsmanager.apply_removal_policy(core.RemovalPolicy.DESTROY)
 
         sfdc_consumer_secret_secretsmanager = aws_secretsmanager.CfnSecret(self,
                                                                            'sfdcconsumersecret{}'.format(construct_id),
                                                                            name='sfdcconsumersecret{}'.format(
                                                                                construct_id),
                                                                            secret_string=sfdc_consumer_secret.value_as_string)
+        sfdc_consumer_secret_secretsmanager.apply_removal_policy(core.RemovalPolicy.DESTROY)
 
         sfdc_user_name_secretsmanager = aws_secretsmanager.CfnSecret(self, 'sfdcusername{}'.format(construct_id),
                                                                      name='sfdcusername{}'.format(construct_id),
                                                                      secret_string=sfdc_user_name.value_as_string)
+        sfdc_user_name_secretsmanager.apply_removal_policy(core.RemovalPolicy.DESTROY)
 
         sfdc_user_password_secretsmanager = aws_secretsmanager.CfnSecret(self,
                                                                          'sfdcuserpassword{}'.format(construct_id),
                                                                          name='sfdcuserpassword{}'.format(construct_id),
                                                                          secret_string=sfdc_user_password.value_as_string)
+        sfdc_user_password_secretsmanager.apply_removal_policy(core.RemovalPolicy.DESTROY)
+
         sfdc_user_security_token_secretsmanager = aws_secretsmanager.CfnSecret(self, 'sfdcusersecuritytoken{}'.format(
             construct_id),
                                                                                name='sfdcusersecuritytoken{}'.format(
                                                                                    construct_id),
                                                                                secret_string=sfdc_user_security_token.value_as_string)
+        sfdc_user_security_token_secretsmanager.apply_removal_policy(core.RemovalPolicy.DESTROY)
 
         sfdc_endpoint_secretsmanager = aws_secretsmanager.CfnSecret(self, 'sfdcendpoint{}'.format(construct_id),
                                                                     name='sfdcendpoint{}'.format(construct_id),
                                                                     secret_string=sfdc_endpoint.value_as_string,
-
                                                                     )
+        sfdc_endpoint_secretsmanager.apply_removal_policy(core.RemovalPolicy.DESTROY)
 
         secrets_manager_iam_policy_statement = aws_iam.PolicyStatement(actions=['secretsmanager:GetSecretValue',
                                                                                 'secretsmanager:DescribeSecret'
@@ -134,10 +137,8 @@ class LexSFDCDrugReminderStack(core.Stack):
                                            removal_policy=core.RemovalPolicy.DESTROY,
                                            )
 
-        # todo https://www.salesforcetutorial.com/creating-custom-fields-in-salesforcce/
         patient_table.grant_write_data(fetch_lambda)
 
-       
         lex_fulfilment_lambda = lambda_python.PythonFunction(self, 'SFDCUpdateLambda',
                                                              entry='./lex_sf_drug_reminder_blog/_lambda/functions/lex_fulfillment',
                                                              index='lambda_function.py',
@@ -181,7 +182,7 @@ class LexSFDCDrugReminderStack(core.Stack):
                                                                                                "lex:DeleteIntent",
                                                                                                "lex:DeleteSlotType",
                                                                                                "lex:StartImport",
-                                                                                               "lex:GetImport","lex:*"
+                                                                                               "lex:GetImport", "lex:*"
                                                                                                ],
                                                                                       effect=aws_iam.Effect.ALLOW,
                                                                                       resources=[
@@ -206,7 +207,7 @@ class LexSFDCDrugReminderStack(core.Stack):
                                                                                           'arn:aws:lex:{}:{}:intent:{}:*'.format(
                                                                                               self.region, self.account,
                                                                                               'Close_Intent')
-                                                                                          ]
+                                                                                      ]
                                                                                       )
 
         lex_operator_lambda = lambda_python.PythonFunction(self, 'LexOperatorLambda',
@@ -227,32 +228,31 @@ class LexSFDCDrugReminderStack(core.Stack):
                             )
 
         connect_operator_lambda_v2 = lambda_python.PythonFunction(self, 'ConnectOperatorLambdav2',
-                                                               entry='./lex_sf_drug_reminder_blog/_lambda/functions/connect_import_flow',
-                                                               index='lambda_function.py',
-                                                               handler='lambda_handler',
-                                                               runtime=_lambda.Runtime.PYTHON_3_8,
-                                                               timeout=core.Duration.minutes(5),
-                                                               environment={"LOG_LEVEL": "DEBUG",
-                                                                            # "CONNECT_SCHEMA": "https://aws-ml-blog.s3.amazonaws.com/artifacts/o365-lex/MakeAppointment_Export-v1.json",
-                                                                            # # todo lambda arn?
-                                                                            "CONNECT_LAMBDA_ARN": lex_fulfilment_lambda.function_arn,
-                                                                            "ACCOUNT_ID": self.account,
-                                                                            "CONNECT_INSTANCE_ID": connectInstanceID.value_as_string,
-                                                                            })
-        
+                                                                  entry='./lex_sf_drug_reminder_blog/_lambda/functions/connect_import_flow',
+                                                                  index='lambda_function.py',
+                                                                  handler='lambda_handler',
+                                                                  runtime=_lambda.Runtime.PYTHON_3_8,
+                                                                  timeout=core.Duration.minutes(5),
+                                                                  environment={"LOG_LEVEL": "DEBUG",
+                                                                               "CONNECT_LAMBDA_ARN": lex_fulfilment_lambda.function_arn,
+                                                                               "ACCOUNT_ID": self.account,
+                                                                               "CONNECT_INSTANCE_ID": connectInstanceID.value_as_string,
+                                                                               })
+
         connect_operator_lambda_connect_import = aws_iam.PolicyStatement(actions=['lex:*',
-                                                                                               'connect:*'],
-                                                                                      effect=aws_iam.Effect.ALLOW,
-                                                                                      resources=['*'])
+                                                                                  'connect:*'],
+                                                                         effect=aws_iam.Effect.ALLOW,
+                                                                         resources=['*'])
 
         connect_operator_lambda_v2.add_permission(id='lex', principal=aws_iam.ServicePrincipal("lex.amazonaws.com"))
-        connect_operator_lambda_v2.add_permission(id='connect', principal=aws_iam.ServicePrincipal("connect.amazonaws.com"))
+        connect_operator_lambda_v2.add_permission(id='connect',
+                                                  principal=aws_iam.ServicePrincipal("connect.amazonaws.com"))
         connect_operator_lambda_v2.add_to_role_policy(connect_operator_lambda_connect_import)
 
         connect_deployment = core.CustomResource(self, 'ConnectDeploymentTriggerNew',
-                            service_token=connect_operator_lambda_v2.function_arn
-                            )
-         # lex_sf_drug_reminder_blog/_lambda/functions/customer_calling
+                                                 service_token=connect_operator_lambda_v2.function_arn
+                                                 )
+        # lex_sf_drug_reminder_blog/_lambda/functions/customer_calling
         customer_calling_lambda = lambda_python.PythonFunction(self, 'CustomerCallingLambda',
                                                                entry='./lex_sf_drug_reminder_blog/_lambda/functions/customer_calling',
                                                                index='lambda_function.py',
@@ -271,7 +271,8 @@ class LexSFDCDrugReminderStack(core.Stack):
             starting_position=_lambda.StartingPosition.TRIM_HORIZON
         ))
         customer_calling_lambda.add_permission(id='lex', principal=aws_iam.ServicePrincipal("lex.amazonaws.com"))
-        customer_calling_lambda.add_permission(id='connect', principal=aws_iam.ServicePrincipal("connect.amazonaws.com"))
+        customer_calling_lambda.add_permission(id='connect',
+                                               principal=aws_iam.ServicePrincipal("connect.amazonaws.com"))
         customer_calling_lambda.add_to_role_policy(connect_operator_lambda_connect_import)
         patient_table.grant_read_write_data(customer_calling_lambda)
         # Call the IoT Stack
