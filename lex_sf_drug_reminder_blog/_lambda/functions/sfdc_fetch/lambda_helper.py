@@ -51,8 +51,6 @@ def get_sfdc_credentials():
     for param in params:
 
         key = os.getenv(param)
-        # todo remove
-        # credentials[param] = key
         if not key:
             raise Exception(
                 "parameter missing for SalesForce OAuth: {}".format(param)
