@@ -80,7 +80,6 @@ def lambda_handler(event, context):
                     DestinationPhoneNumber=Customer_Phone_Number,
                     ContactFlowId=str(FLOW_ID),
                     InstanceId=str(CONNECT_INSTANCE_ID),
-                    # SourcePhoneNumber='+14084250666',
                     QueueId=str(QueueId_ENV),
                     Attributes={
                         'Calling_Customer_First_Name': Calling_Customer_First_Name,

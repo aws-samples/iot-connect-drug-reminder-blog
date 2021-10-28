@@ -1,7 +1,7 @@
 {
-    "Arn": "arn:aws:connect:us-east-1:0951691xxxxx:instance/0749f44c-8889-4dee-9cd9-70088ff3xxxx/contact-flow/451d2c38-833d-438d-8fa2-202ce539xxxx",
+    "Arn": "arn:aws:connect:us-east-1:09516919xxxx:instance/0749f44c-8889-4dee-9cd9-70088ff3xxxx/contact-flow/451d2c38-833d-438d-8fa2-202ce539xxxx",
     "Id": "451d2c38-833d-438d-8fa2-202ce5393030",
-    "Name": "Drug_Reminder_Test",
+    "Name": "drug_reminder_flow",
     "Type": "CONTACT_FLOW",
     "Content": {
         "Version": "2019-10-30",
@@ -15,59 +15,26 @@
             "ActionMetadata": {
                 "e4a222fe-eefa-48e9-ae65-6a6c60c455bb": {
                     "position": {
-                        "x": 1730,
-                        "y": 596
+                        "x": 1631,
+                        "y": 402
                     }
                 },
-                "640e0a9a-361d-42bf-81f4-6f11457951ce": {
+                "680ef637-3b84-47dd-a2fc-cabfa8ca1789": {
                     "position": {
-                        "x": 157,
-                        "y": 12
-                    }
+                        "x": 1365,
+                        "y": 345
+                    },
+                    "useDynamic": false
                 },
-                "101cd9ec-19eb-4fed-a395-df0c70d777dd": {
+                "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2": {
                     "position": {
-                        "x": 142,
+                        "x": 1103,
                         "y": 299
                     },
                     "conditionMetadata": [
                         {
-                            "id": "9e2251a0-2f77-494f-844e-447a9db1d38c",
-                            "value": "Auth"
-                        }
-                    ],
-                    "useDynamic": false,
-                    "dynamicMetadata": {},
-                    "useLexBotDropdown": true,
-                    "useDynamicLexBotArn": false,
-                    "lexV2BotName": "Drug_Reminder_Bot"
-                },
-                "029a95d9-e2c5-46f2-9a53-dbc93077f922": {
-                    "position": {
-                        "x": 383,
-                        "y": 301
-                    },
-                    "conditionMetadata": [
-                        {
-                            "id": "0ae84512-bcd9-4b1d-80d3-4eb312ea6351",
-                            "value": "Dose_Appearance"
-                        }
-                    ],
-                    "useDynamic": false,
-                    "dynamicMetadata": {},
-                    "useLexBotDropdown": true,
-                    "useDynamicLexBotArn": false,
-                    "lexV2BotName": "Drug_Reminder_Bot"
-                },
-                "8c076ca6-9d04-4a6f-b6b9-82bb3c7c9213": {
-                    "position": {
-                        "x": 620,
-                        "y": 296
-                    },
-                    "conditionMetadata": [
-                        {
-                            "id": "bc2b08b2-78ba-4fef-a0ec-d9e89cc40260",
-                            "value": "Dose_Quantity"
+                            "id": "c9e18a40-9820-4126-bf50-fc6f3d5e0891",
+                            "value": "Close_Intent"
                         }
                     ],
                     "useDynamic": false,
@@ -83,7 +50,7 @@
                     },
                     "conditionMetadata": [
                         {
-                            "id": "bc06324c-1628-4bcd-8679-ce8f2daad38f",
+                            "id": "66f1a628-f1f2-4cca-b044-df590e6a9c8e",
                             "value": "Dose_Confirm"
                         }
                     ],
@@ -93,22 +60,15 @@
                     "useDynamicLexBotArn": false,
                     "lexV2BotName": "Drug_Reminder_Bot"
                 },
-                "680ef637-3b84-47dd-a2fc-cabfa8ca1789": {
+                "8c076ca6-9d04-4a6f-b6b9-82bb3c7c9213": {
                     "position": {
-                        "x": 1654,
-                        "y": 357
-                    },
-                    "useDynamic": false
-                },
-                "90b6b0a2-b7a5-4e93-9577-654ceb85047f": {
-                    "position": {
-                        "x": 1088,
-                        "y": 292
+                        "x": 620,
+                        "y": 296
                     },
                     "conditionMetadata": [
                         {
-                            "id": "2b662347-f93d-474f-8af9-ab5a20154b4a",
-                            "value": "MRI_Scan"
+                            "id": "be7a4945-d5d3-49a5-91a5-ca96d2074796",
+                            "value": "Dose_Quantity"
                         }
                     ],
                     "useDynamic": false,
@@ -117,15 +77,21 @@
                     "useDynamicLexBotArn": false,
                     "lexV2BotName": "Drug_Reminder_Bot"
                 },
-                "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2": {
+                "640e0a9a-361d-42bf-81f4-6f11457951ce": {
                     "position": {
-                        "x": 1368,
-                        "y": 310
+                        "x": 157,
+                        "y": 12
+                    }
+                },
+                "029a95d9-e2c5-46f2-9a53-dbc93077f922": {
+                    "position": {
+                        "x": 356,
+                        "y": 289
                     },
                     "conditionMetadata": [
                         {
-                            "id": "ee301299-50e3-4b9c-83ec-e6b968cbdb40",
-                            "value": "Close_Intent"
+                            "id": "68ca5a74-3afb-4d94-b434-650e988af26c",
+                            "value": "Dose_Appearance"
                         }
                     ],
                     "useDynamic": false,
@@ -144,21 +110,21 @@
                 "Transitions": {}
             },
             {
-                "Identifier": "640e0a9a-361d-42bf-81f4-6f11457951ce",
+                "Identifier": "680ef637-3b84-47dd-a2fc-cabfa8ca1789",
                 "Parameters": {
-                    "FlowLoggingBehavior": "Enabled"
+                    "Text": "Thanks. Have a great day."
                 },
                 "Transitions": {
-                    "NextAction": "101cd9ec-19eb-4fed-a395-df0c70d777dd",
+                    "NextAction": "e4a222fe-eefa-48e9-ae65-6a6c60c455bb",
                     "Errors": [],
                     "Conditions": []
                 },
-                "Type": "UpdateFlowLoggingBehavior"
+                "Type": "MessageParticipant"
             },
             {
-                "Identifier": "101cd9ec-19eb-4fed-a395-df0c70d777dd",
+                "Identifier": "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2",
                 "Parameters": {
-                    "Text": "Hi, I am your virtual healthcare assistant. Is this $.Attributes.Calling_Customer_First_Name $.Attributes.Calling_Customer_Last_Name ?",
+                    "Text": "Is there anything else I can help you with?",
                     "LexBot": {
                         "Name": "Drug_Reminder_Bot",
                         "Region": "us-east-1",
@@ -166,24 +132,24 @@
                     }
                 },
                 "Transitions": {
-                    "NextAction": "029a95d9-e2c5-46f2-9a53-dbc93077f922",
+                    "NextAction": "680ef637-3b84-47dd-a2fc-cabfa8ca1789",
                     "Errors": [
                         {
-                            "NextAction": "029a95d9-e2c5-46f2-9a53-dbc93077f922",
+                            "NextAction": "680ef637-3b84-47dd-a2fc-cabfa8ca1789",
                             "ErrorType": "NoMatchingError"
                         },
                         {
-                            "NextAction": "029a95d9-e2c5-46f2-9a53-dbc93077f922",
+                            "NextAction": "680ef637-3b84-47dd-a2fc-cabfa8ca1789",
                             "ErrorType": "NoMatchingCondition"
                         }
                     ],
                     "Conditions": [
                         {
-                            "NextAction": "029a95d9-e2c5-46f2-9a53-dbc93077f922",
+                            "NextAction": "680ef637-3b84-47dd-a2fc-cabfa8ca1789",
                             "Condition": {
                                 "Operator": "Equals",
                                 "Operands": [
-                                    "Auth"
+                                    "Close_Intent"
                                 ]
                             }
                         }
@@ -192,9 +158,9 @@
                 "Type": "ConnectParticipantWithLexBot"
             },
             {
-                "Identifier": "029a95d9-e2c5-46f2-9a53-dbc93077f922",
+                "Identifier": "0b2ac510-f213-4c3f-93ae-29b9d48a6a9e",
                 "Parameters": {
-                    "Text": "Thanks. I am calling you about your afternoon medication. Have you taken your medication yet?",
+                    "Text": "You need to take 1 dose now. Let me know once you\u2019ve taken it",
                     "LexBot": {
                         "Name": "Drug_Reminder_Bot",
                         "Region": "us-east-1",
@@ -202,24 +168,24 @@
                     }
                 },
                 "Transitions": {
-                    "NextAction": "8c076ca6-9d04-4a6f-b6b9-82bb3c7c9213",
+                    "NextAction": "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2",
                     "Errors": [
                         {
-                            "NextAction": "8c076ca6-9d04-4a6f-b6b9-82bb3c7c9213",
+                            "NextAction": "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2",
                             "ErrorType": "NoMatchingError"
                         },
                         {
-                            "NextAction": "8c076ca6-9d04-4a6f-b6b9-82bb3c7c9213",
+                            "NextAction": "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2",
                             "ErrorType": "NoMatchingCondition"
                         }
                     ],
                     "Conditions": [
                         {
-                            "NextAction": "8c076ca6-9d04-4a6f-b6b9-82bb3c7c9213",
+                            "NextAction": "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2",
                             "Condition": {
                                 "Operator": "Equals",
                                 "Operands": [
-                                    "Dose_Appearance"
+                                    "Dose_Confirm"
                                 ]
                             }
                         }
@@ -264,57 +230,21 @@
                 "Type": "ConnectParticipantWithLexBot"
             },
             {
-                "Identifier": "0b2ac510-f213-4c3f-93ae-29b9d48a6a9e",
+                "Identifier": "640e0a9a-361d-42bf-81f4-6f11457951ce",
                 "Parameters": {
-                    "Text": "You need to take 1 dose now. Let me know once you\u2019ve taken it",
-                    "LexBot": {
-                        "Name": "Drug_Reminder_Bot",
-                        "Region": "us-east-1",
-                        "Alias": "live"
-                    }
+                    "FlowLoggingBehavior": "Enabled"
                 },
                 "Transitions": {
-                    "NextAction": "90b6b0a2-b7a5-4e93-9577-654ceb85047f",
-                    "Errors": [
-                        {
-                            "NextAction": "90b6b0a2-b7a5-4e93-9577-654ceb85047f",
-                            "ErrorType": "NoMatchingError"
-                        },
-                        {
-                            "NextAction": "90b6b0a2-b7a5-4e93-9577-654ceb85047f",
-                            "ErrorType": "NoMatchingCondition"
-                        }
-                    ],
-                    "Conditions": [
-                        {
-                            "NextAction": "90b6b0a2-b7a5-4e93-9577-654ceb85047f",
-                            "Condition": {
-                                "Operator": "Equals",
-                                "Operands": [
-                                    "Dose_Confirm"
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "Type": "ConnectParticipantWithLexBot"
-            },
-            {
-                "Identifier": "680ef637-3b84-47dd-a2fc-cabfa8ca1789",
-                "Parameters": {
-                    "Text": "Thanks. Have a great day."
-                },
-                "Transitions": {
-                    "NextAction": "e4a222fe-eefa-48e9-ae65-6a6c60c455bb",
+                    "NextAction": "029a95d9-e2c5-46f2-9a53-dbc93077f922",
                     "Errors": [],
                     "Conditions": []
                 },
-                "Type": "MessageParticipant"
+                "Type": "UpdateFlowLoggingBehavior"
             },
             {
-                "Identifier": "90b6b0a2-b7a5-4e93-9577-654ceb85047f",
+                "Identifier": "029a95d9-e2c5-46f2-9a53-dbc93077f922",
                 "Parameters": {
-                    "Text": "Okay.  Is there anything else I can help you with?",
+                    "Text": "Hi, I am your virtual healthcare assistant. I am calling you about your afternoon medication. Have you taken your medication yet?",
                     "LexBot": {
                         "Name": "Drug_Reminder_Bot",
                         "Region": "us-east-1",
@@ -322,60 +252,24 @@
                     }
                 },
                 "Transitions": {
-                    "NextAction": "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2",
+                    "NextAction": "8c076ca6-9d04-4a6f-b6b9-82bb3c7c9213",
                     "Errors": [
                         {
-                            "NextAction": "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2",
+                            "NextAction": "8c076ca6-9d04-4a6f-b6b9-82bb3c7c9213",
                             "ErrorType": "NoMatchingError"
                         },
                         {
-                            "NextAction": "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2",
+                            "NextAction": "8c076ca6-9d04-4a6f-b6b9-82bb3c7c9213",
                             "ErrorType": "NoMatchingCondition"
                         }
                     ],
                     "Conditions": [
                         {
-                            "NextAction": "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2",
+                            "NextAction": "8c076ca6-9d04-4a6f-b6b9-82bb3c7c9213",
                             "Condition": {
                                 "Operator": "Equals",
                                 "Operands": [
-                                    "MRI_Scan"
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "Type": "ConnectParticipantWithLexBot"
-            },
-            {
-                "Identifier": "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2",
-                "Parameters": {
-                    "Text": "Your MRI scan is scheduled for $.Attributes.MRI_Scan_Date  at $.Attributes.MRI_Scan_Time. Is there anything else I can help you with?",
-                    "LexBot": {
-                        "Name": "Drug_Reminder_Bot",
-                        "Region": "us-east-1",
-                        "Alias": "live"
-                    }
-                },
-                "Transitions": {
-                    "NextAction": "680ef637-3b84-47dd-a2fc-cabfa8ca1789",
-                    "Errors": [
-                        {
-                            "NextAction": "680ef637-3b84-47dd-a2fc-cabfa8ca1789",
-                            "ErrorType": "NoMatchingError"
-                        },
-                        {
-                            "NextAction": "680ef637-3b84-47dd-a2fc-cabfa8ca1789",
-                            "ErrorType": "NoMatchingCondition"
-                        }
-                    ],
-                    "Conditions": [
-                        {
-                            "NextAction": "680ef637-3b84-47dd-a2fc-cabfa8ca1789",
-                            "Condition": {
-                                "Operator": "Equals",
-                                "Operands": [
-                                    "Close_Intent"
+                                    "Dose_Appearance"
                                 ]
                             }
                         }
