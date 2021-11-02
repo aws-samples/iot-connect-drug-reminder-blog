@@ -16,8 +16,8 @@ class IoTStack(core.Construct):
     def __init__(self, scope: core.Construct, id: str, project_prefix_obj, time_zone_obj, dynamoTable_obj, **kwargs):
         super().__init__(scope, id, **kwargs)
 
-        prefix_project_string = project_prefix_obj.value_as_string + "-"
-        time_zone_string = time_zone_obj.value_as_string
+        prefix_project_string = project_prefix_obj + "-"
+        time_zone_string = time_zone_obj
 
         update_dynamo_table_lambda = _lambda.Function(self, "IoTUpdatePatientTable",
                                                       runtime=_lambda.Runtime.PYTHON_3_8,

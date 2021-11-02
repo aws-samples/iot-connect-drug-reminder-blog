@@ -19,70 +19,44 @@ SFDC_DYNAMO_DB_TABLE_NAME = "SFDCPatientTable"
 class LexSFDCDrugReminderStack(core.Stack):
 
     def __init__(self, scope: core.Construct, construct_id: str, **kwargs) -> None:
+        params = kwargs.pop('params')
         super().__init__(scope, construct_id, **kwargs)
-
-        # Cfn parameters
-        connectInstanceID = core.CfnParameter(self, "connectInstanceID", type="String",
-                                              description="InstanceID of the Connect Instance in your AWS Account")
-
-        project_prefix = core.CfnParameter(self, "projectPrefix", type="String", default='dev',
-                                           description="prefix for all the resources in the project")
-
-        time_zone = core.CfnParameter(self, "timeZone", type="String", default='US/Eastern',
-                                      description="timezone to be used for the entire project")
-
-        sfdc_consumer_key = core.CfnParameter(self, 'consumerkey',
-                                              description='SalesForce application consumer key')
-
-        sfdc_consumer_secret = core.CfnParameter(self, 'consumersecret',
-                                                 description='SalesForce application consumer secret')
-
-        sfdc_user_name = core.CfnParameter(self, 'username',
-                                           description='SalesForce user name')
-
-        sfdc_user_password = core.CfnParameter(self, 'password',
-                                               description='SalesForce user password')
-
-        sfdc_user_security_token = core.CfnParameter(self, 'securitytoken',
-                                                     description='SalesForce user security token')
-
-        sfdc_endpoint = core.CfnParameter(self, 'endpoint',
-                                          description='SalesForce api endpoint')
 
         sfdc_consumer_key_secretsmanager = aws_secretsmanager.CfnSecret(self, 'sfdcconsumerkey{}'.format(construct_id),
                                                                         name='sfdcconsumerkey{}'.format(construct_id),
-                                                                        secret_string=sfdc_consumer_key.value_as_string)
+                                                                        secret_string=params.get("sfdc_consumer_key"))
         sfdc_consumer_key_secretsmanager.apply_removal_policy(core.RemovalPolicy.DESTROY)
 
         sfdc_consumer_secret_secretsmanager = aws_secretsmanager.CfnSecret(self,
                                                                            'sfdcconsumersecret{}'.format(construct_id),
                                                                            name='sfdcconsumersecret{}'.format(
                                                                                construct_id),
-                                                                           secret_string=sfdc_consumer_secret.value_as_string)
+                                                                           secret_string=params.get(
+                                                                               "sfdc_consumer_secret"))
         sfdc_consumer_secret_secretsmanager.apply_removal_policy(core.RemovalPolicy.DESTROY)
 
         sfdc_user_name_secretsmanager = aws_secretsmanager.CfnSecret(self, 'sfdcusername{}'.format(construct_id),
                                                                      name='sfdcusername{}'.format(construct_id),
-                                                                     secret_string=sfdc_user_name.value_as_string)
+                                                                     secret_string=params.get("sfdc_user_name"))
         sfdc_user_name_secretsmanager.apply_removal_policy(core.RemovalPolicy.DESTROY)
 
         sfdc_user_password_secretsmanager = aws_secretsmanager.CfnSecret(self,
                                                                          'sfdcuserpassword{}'.format(construct_id),
                                                                          name='sfdcuserpassword{}'.format(construct_id),
-                                                                         secret_string=sfdc_user_password.value_as_string)
+                                                                         secret_string=params.get("sfdc_user_password"))
         sfdc_user_password_secretsmanager.apply_removal_policy(core.RemovalPolicy.DESTROY)
 
         sfdc_user_security_token_secretsmanager = aws_secretsmanager.CfnSecret(self, 'sfdcusersecuritytoken{}'.format(
             construct_id),
                                                                                name='sfdcusersecuritytoken{}'.format(
                                                                                    construct_id),
-                                                                               secret_string=sfdc_user_security_token.value_as_string)
+                                                                               secret_string=params.get(
+                                                                                   "sfdc_user_security_token"))
         sfdc_user_security_token_secretsmanager.apply_removal_policy(core.RemovalPolicy.DESTROY)
 
         sfdc_endpoint_secretsmanager = aws_secretsmanager.CfnSecret(self, 'sfdcendpoint{}'.format(construct_id),
                                                                     name='sfdcendpoint{}'.format(construct_id),
-                                                                    secret_string=sfdc_endpoint.value_as_string,
-                                                                    )
+                                                                    secret_string=params.get("sfdc_endpoint"))
         sfdc_endpoint_secretsmanager.apply_removal_policy(core.RemovalPolicy.DESTROY)
 
         secrets_manager_iam_policy_statement = aws_iam.PolicyStatement(actions=['secretsmanager:GetSecretValue',
@@ -235,7 +209,8 @@ class LexSFDCDrugReminderStack(core.Stack):
                                                                   environment={"LOG_LEVEL": "DEBUG",
                                                                                "CONNECT_LAMBDA_ARN": lex_fulfilment_lambda.function_arn,
                                                                                "ACCOUNT_ID": self.account,
-                                                                               "CONNECT_INSTANCE_ID": connectInstanceID.value_as_string,
+                                                                               "CONNECT_INSTANCE_ID": params.get(
+                                                                                   "connectInstanceID")
                                                                                })
 
         connect_operator_lambda_connect_import = aws_iam.PolicyStatement(actions=['lex:*',
@@ -260,7 +235,8 @@ class LexSFDCDrugReminderStack(core.Stack):
                                                                timeout=core.Duration.minutes(2),
                                                                environment={"LOG_LEVEL": "DEBUG",
                                                                             "PATIENT_RECORDS": patient_table.table_name,
-                                                                            "CONNECT_INSTANCE_ID": connectInstanceID.value_as_string,
+                                                                            "CONNECT_INSTANCE_ID": params.get(
+                                                                                "connectInstanceID"),
                                                                             "FLOW_ID": "Upload Flow ID here",
                                                                             "QueueId": "Upload Queue ID here"
                                                                             })
@@ -275,5 +251,6 @@ class LexSFDCDrugReminderStack(core.Stack):
         customer_calling_lambda.add_to_role_policy(connect_operator_lambda_connect_import)
         patient_table.grant_read_write_data(customer_calling_lambda)
         # Call the IoT Stack
-        IoTStack(self, "iot-resources", project_prefix_obj=project_prefix, time_zone_obj=time_zone,
+        IoTStack(self, "iot-resources", project_prefix_obj=params.get("project_prefix"),
+                 time_zone_obj=params.get("time_zone"),
                  dynamoTable_obj=patient_table)
