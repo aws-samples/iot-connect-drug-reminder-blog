@@ -155,7 +155,27 @@ class LexSFDCDrugReminderStack(core.Stack):
                                                                                                "lex:DeleteIntent",
                                                                                                "lex:DeleteSlotType",
                                                                                                "lex:StartImport",
-                                                                                               "lex:GetImport", "lex:*"
+                                                                                               "lex:GetImport",  
+                                                                                               "lex:CreateBot",
+                                                                                               "lex:CreateIntent",
+                                                                                               "lex:UpdateSlot",
+                                                                                               "lex:DescribeBotLocale",
+                                                                                               "lex:UpdateBotAlias",
+                                                                                               "lex:CreateSlotType",
+                                                                                               "lex:DeleteBotLocale",
+                                                                                               "lex:DescribeBot",
+                                                                                               "lex:UpdateBotLocale",
+                                                                                               "lex:CreateSlot",
+                                                                                               "lex:DeleteSlot",
+                                                                                               "lex:UpdateBot",
+                                                                                               "lex:DeleteSlotType",
+                                                                                               "lex:DescribeBotAlias",
+                                                                                               "lex:CreateBotLocale",
+                                                                                               "lex:DeleteIntent",
+                                                                                               "lex:StartImport",
+                                                                                               "lex:UpdateSlotType",
+                                                                                               "lex:UpdateIntent",
+                                                                                               "lex:DescribeImport"
                                                                                                ],
                                                                                       effect=aws_iam.Effect.ALLOW,
                                                                                       resources=[
@@ -209,12 +229,35 @@ class LexSFDCDrugReminderStack(core.Stack):
                                                                   environment={"LOG_LEVEL": "DEBUG",
                                                                                "CONNECT_LAMBDA_ARN": lex_fulfilment_lambda.function_arn,
                                                                                "ACCOUNT_ID": self.account,
-                                                                               "CONNECT_INSTANCE_ID": params.get(
-                                                                                   "connectInstanceID")
+                                                                               "CONNECT_INSTANCE_ID": str(params.get(
+                                                                                   "connectInstanceID"))
                                                                                })
 
-        connect_operator_lambda_connect_import = aws_iam.PolicyStatement(actions=['lex:*',
-                                                                                  'connect:*'],
+        connect_operator_lambda_connect_import = aws_iam.PolicyStatement(actions=["connect:CreateInstance",
+                                                                                  "connect:DescribeInstance",
+                                                                                  "connect:ListInstances",
+                                                                                  "connect:AssociateInstanceStorageConfig",
+                                                                                  "connect:UpdateInstanceAttribute",
+                                                                                  "connect:ListSecurityKeys",
+                                                                                  "connect:ListLexBots",
+                                                                                  "connect:ListBots",
+                                                                                  "lex:GetBots",
+                                                                                  "lex:GetBot",
+                                                                                  "lex:CreateResourcePolicy",
+                                                                                  "lex:DeleteResourcePolicy",
+                                                                                  "lex:UpdateResourcePolicy",
+                                                                                  "lex:DescribeBotAlias",
+                                                                                  "lex:ListBotAliases",
+                                                                                  "lex:ListBots",
+                                                                                  "connect:AssociateBot",
+                                                                                  "connect:DisassociateBot",
+                                                                                  "connect:ListBots",
+                                                                                  "connect:AssociateLexBot",
+                                                                                  "connect:DisassociateLexBot",
+                                                                                  "connect:ListLexBots",
+                                                                                  "connect:ListLambdaFunctions",
+                                                                                  "connect:AssociateLambdaFunction",
+                                                                                  "connect:DisassociateLambdaFunction"],
                                                                          effect=aws_iam.Effect.ALLOW,
                                                                          resources=['*'])
 
@@ -235,8 +278,8 @@ class LexSFDCDrugReminderStack(core.Stack):
                                                                timeout=core.Duration.minutes(2),
                                                                environment={"LOG_LEVEL": "DEBUG",
                                                                             "PATIENT_RECORDS": patient_table.table_name,
-                                                                            "CONNECT_INSTANCE_ID": params.get(
-                                                                                "connectInstanceID"),
+                                                                            "CONNECT_INSTANCE_ID": str(params.get(
+                                                                                "connectInstanceID")),
                                                                             "FLOW_ID": "Upload Flow ID here",
                                                                             "QueueId": "Upload Queue ID here"
                                                                             })
