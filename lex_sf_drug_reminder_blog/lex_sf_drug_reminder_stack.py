@@ -143,7 +143,29 @@ class LexSFDCDrugReminderStack(core.Stack):
         lex_operator_iam_policy_statement_lambda_lex_import = aws_iam.PolicyStatement(actions=['lex:StartImport',
                                                                                                'lex:GetImport'],
                                                                                       effect=aws_iam.Effect.ALLOW,
-                                                                                      resources=['*'])
+                                                                                      resources=[
+                                                                                          'arn:aws:lex:{}:{}:bot:{}:*'.format(
+                                                                                              self.region, self.account,
+                                                                                              'Drug_Reminder_Bot'),
+                                                                                          'arn:aws:lex:{}:{}:intent:{}:*'.format(
+                                                                                              self.region, self.account,
+                                                                                              'Dose_Confirm'),
+                                                                                          'arn:aws:lex:{}:{}:intent:{}:*'.format(
+                                                                                              self.region, self.account,
+                                                                                              'Dose_Quantity'),
+                                                                                          'arn:aws:lex:{}:{}:intent:{}:*'.format(
+                                                                                              self.region, self.account,
+                                                                                              'Auth'),
+                                                                                          'arn:aws:lex:{}:{}:intent:{}:*'.format(
+                                                                                              self.region, self.account,
+                                                                                              'MRI_Scan'),
+                                                                                          'arn:aws:lex:{}:{}:intent:{}:*'.format(
+                                                                                              self.region, self.account,
+                                                                                              'Dose_Appearance'),
+                                                                                          'arn:aws:lex:{}:{}:intent:{}:*'.format(
+                                                                                              self.region, self.account,
+                                                                                              'Close_Intent')
+                                                                                      ])
 
         lex_operator_iam_policy_statement_lambda_lex_update = aws_iam.PolicyStatement(actions=["lex:PutSlotType",
                                                                                                "lex:GetBot",
@@ -233,7 +255,7 @@ class LexSFDCDrugReminderStack(core.Stack):
                                                                                    "connectInstanceID"))
                                                                                })
 
-        connect_operator_lambda_connect_import = aws_iam.PolicyStatement(actions=["connect:CreateInstance",
+        connect_operator_lambda_connect_import_connect = aws_iam.PolicyStatement(actions=["connect:CreateInstance",
                                                                                   "connect:DescribeInstance",
                                                                                   "connect:ListInstances",
                                                                                   "connect:AssociateInstanceStorageConfig",
@@ -241,14 +263,6 @@ class LexSFDCDrugReminderStack(core.Stack):
                                                                                   "connect:ListSecurityKeys",
                                                                                   "connect:ListLexBots",
                                                                                   "connect:ListBots",
-                                                                                  "lex:GetBots",
-                                                                                  "lex:GetBot",
-                                                                                  "lex:CreateResourcePolicy",
-                                                                                  "lex:DeleteResourcePolicy",
-                                                                                  "lex:UpdateResourcePolicy",
-                                                                                  "lex:DescribeBotAlias",
-                                                                                  "lex:ListBotAliases",
-                                                                                  "lex:ListBots",
                                                                                   "connect:AssociateBot",
                                                                                   "connect:DisassociateBot",
                                                                                   "connect:ListBots",
@@ -259,12 +273,46 @@ class LexSFDCDrugReminderStack(core.Stack):
                                                                                   "connect:AssociateLambdaFunction",
                                                                                   "connect:DisassociateLambdaFunction"],
                                                                          effect=aws_iam.Effect.ALLOW,
-                                                                         resources=['*'])
+                                                                         resources=["arn:aws:connect:{}:{}:instance/*".format(
+                                                                                              self.region, self.account)])
+        connect_operator_lambda_connect_import_lex = aws_iam.PolicyStatement(actions=["lex:GetBots",
+                                                                                          "lex:GetBot",
+                                                                                          "lex:CreateResourcePolicy",
+                                                                                          "lex:DeleteResourcePolicy",
+                                                                                          "lex:UpdateResourcePolicy",
+                                                                                          "lex:DescribeBotAlias",
+                                                                                          "lex:ListBotAliases",
+                                                                                          "lex:ListBots"],
+                                                                         effect=aws_iam.Effect.ALLOW,
+                                                                         resources=[
+                                                                                          'arn:aws:lex:{}:{}:bot:{}:*'.format(
+                                                                                              self.region, self.account,
+                                                                                              'Drug_Reminder_Bot'),
+                                                                                          'arn:aws:lex:{}:{}:intent:{}:*'.format(
+                                                                                              self.region, self.account,
+                                                                                              'Dose_Confirm'),
+                                                                                          'arn:aws:lex:{}:{}:intent:{}:*'.format(
+                                                                                              self.region, self.account,
+                                                                                              'Dose_Quantity'),
+                                                                                          'arn:aws:lex:{}:{}:intent:{}:*'.format(
+                                                                                              self.region, self.account,
+                                                                                              'Auth'),
+                                                                                          'arn:aws:lex:{}:{}:intent:{}:*'.format(
+                                                                                              self.region, self.account,
+                                                                                              'MRI_Scan'),
+                                                                                          'arn:aws:lex:{}:{}:intent:{}:*'.format(
+                                                                                              self.region, self.account,
+                                                                                              'Dose_Appearance'),
+                                                                                          'arn:aws:lex:{}:{}:intent:{}:*'.format(
+                                                                                              self.region, self.account,
+                                                                                              'Close_Intent')
+                                                                                      ])
 
         connect_operator_lambda_v2.add_permission(id='lex', principal=aws_iam.ServicePrincipal("lex.amazonaws.com"))
         connect_operator_lambda_v2.add_permission(id='connect',
                                                   principal=aws_iam.ServicePrincipal("connect.amazonaws.com"))
-        connect_operator_lambda_v2.add_to_role_policy(connect_operator_lambda_connect_import)
+        connect_operator_lambda_v2.add_to_role_policy(connect_operator_lambda_connect_import_connect)
+        connect_operator_lambda_v2.add_to_role_policy(connect_operator_lambda_connect_import_lex)
 
         connect_deployment = core.CustomResource(self, 'ConnectDeploymentTriggerNew',
                                                  service_token=connect_operator_lambda_v2.function_arn
