@@ -339,7 +339,8 @@ class LexSFDCDrugReminderStack(core.Stack):
         customer_calling_lambda.add_permission(id='lex', principal=aws_iam.ServicePrincipal("lex.amazonaws.com"))
         customer_calling_lambda.add_permission(id='connect',
                                                principal=aws_iam.ServicePrincipal("connect.amazonaws.com"))
-        customer_calling_lambda.add_to_role_policy(connect_operator_lambda_connect_import)
+        customer_calling_lambda.add_to_role_policy(connect_operator_lambda_connect_import_connect)
+        customer_calling_lambda.add_to_role_policy(connect_operator_lambda_connect_import_lex)
         patient_table.grant_read_write_data(customer_calling_lambda)
         # Call the IoT Stack
         IoTStack(self, "iot-resources", project_prefix_obj=params.get("project_prefix"),
