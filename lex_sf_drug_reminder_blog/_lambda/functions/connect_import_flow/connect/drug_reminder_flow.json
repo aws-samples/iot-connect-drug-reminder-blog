@@ -1,0 +1,283 @@
+{
+    "Arn": "arn:aws:connect:us-east-1:09516919xxxx:instance/0749f44c-8889-4dee-9cd9-70088ff3xxxx/contact-flow/451d2c38-833d-438d-8fa2-202ce539xxxx",
+    "Id": "451d2c38-833d-438d-8fa2-202ce5393030",
+    "Name": "drug_reminder_flow",
+    "Type": "CONTACT_FLOW",
+    "Content": {
+        "Version": "2019-10-30",
+        "StartAction": "640e0a9a-361d-42bf-81f4-6f11457951ce",
+        "Metadata": {
+            "entryPointPosition": {
+                "x": 15,
+                "y": 20
+            },
+            "snapToGrid": false,
+            "ActionMetadata": {
+                "e4a222fe-eefa-48e9-ae65-6a6c60c455bb": {
+                    "position": {
+                        "x": 1631,
+                        "y": 402
+                    }
+                },
+                "680ef637-3b84-47dd-a2fc-cabfa8ca1789": {
+                    "position": {
+                        "x": 1365,
+                        "y": 345
+                    },
+                    "useDynamic": false
+                },
+                "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2": {
+                    "position": {
+                        "x": 1103,
+                        "y": 299
+                    },
+                    "conditionMetadata": [
+                        {
+                            "id": "c9e18a40-9820-4126-bf50-fc6f3d5e0891",
+                            "value": "Close_Intent"
+                        }
+                    ],
+                    "useDynamic": false,
+                    "dynamicMetadata": {},
+                    "useLexBotDropdown": true,
+                    "useDynamicLexBotArn": false,
+                    "lexV2BotName": "Drug_Reminder_Bot"
+                },
+                "0b2ac510-f213-4c3f-93ae-29b9d48a6a9e": {
+                    "position": {
+                        "x": 843,
+                        "y": 293
+                    },
+                    "conditionMetadata": [
+                        {
+                            "id": "66f1a628-f1f2-4cca-b044-df590e6a9c8e",
+                            "value": "Dose_Confirm"
+                        }
+                    ],
+                    "useDynamic": false,
+                    "dynamicMetadata": {},
+                    "useLexBotDropdown": true,
+                    "useDynamicLexBotArn": false,
+                    "lexV2BotName": "Drug_Reminder_Bot"
+                },
+                "8c076ca6-9d04-4a6f-b6b9-82bb3c7c9213": {
+                    "position": {
+                        "x": 620,
+                        "y": 296
+                    },
+                    "conditionMetadata": [
+                        {
+                            "id": "be7a4945-d5d3-49a5-91a5-ca96d2074796",
+                            "value": "Dose_Quantity"
+                        }
+                    ],
+                    "useDynamic": false,
+                    "dynamicMetadata": {},
+                    "useLexBotDropdown": true,
+                    "useDynamicLexBotArn": false,
+                    "lexV2BotName": "Drug_Reminder_Bot"
+                },
+                "640e0a9a-361d-42bf-81f4-6f11457951ce": {
+                    "position": {
+                        "x": 157,
+                        "y": 12
+                    }
+                },
+                "029a95d9-e2c5-46f2-9a53-dbc93077f922": {
+                    "position": {
+                        "x": 356,
+                        "y": 289
+                    },
+                    "conditionMetadata": [
+                        {
+                            "id": "68ca5a74-3afb-4d94-b434-650e988af26c",
+                            "value": "Dose_Appearance"
+                        }
+                    ],
+                    "useDynamic": false,
+                    "dynamicMetadata": {},
+                    "useLexBotDropdown": true,
+                    "useDynamicLexBotArn": false,
+                    "lexV2BotName": "Drug_Reminder_Bot"
+                }
+            }
+        },
+        "Actions": [
+            {
+                "Identifier": "e4a222fe-eefa-48e9-ae65-6a6c60c455bb",
+                "Type": "DisconnectParticipant",
+                "Parameters": {},
+                "Transitions": {}
+            },
+            {
+                "Identifier": "680ef637-3b84-47dd-a2fc-cabfa8ca1789",
+                "Parameters": {
+                    "Text": "Thanks. Have a great day."
+                },
+                "Transitions": {
+                    "NextAction": "e4a222fe-eefa-48e9-ae65-6a6c60c455bb",
+                    "Errors": [],
+                    "Conditions": []
+                },
+                "Type": "MessageParticipant"
+            },
+            {
+                "Identifier": "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2",
+                "Parameters": {
+                    "Text": "Is there anything else I can help you with?",
+                    "LexBot": {
+                        "Name": "Drug_Reminder_Bot",
+                        "Region": "us-east-1",
+                        "Alias": "live"
+                    }
+                },
+                "Transitions": {
+                    "NextAction": "680ef637-3b84-47dd-a2fc-cabfa8ca1789",
+                    "Errors": [
+                        {
+                            "NextAction": "680ef637-3b84-47dd-a2fc-cabfa8ca1789",
+                            "ErrorType": "NoMatchingError"
+                        },
+                        {
+                            "NextAction": "680ef637-3b84-47dd-a2fc-cabfa8ca1789",
+                            "ErrorType": "NoMatchingCondition"
+                        }
+                    ],
+                    "Conditions": [
+                        {
+                            "NextAction": "680ef637-3b84-47dd-a2fc-cabfa8ca1789",
+                            "Condition": {
+                                "Operator": "Equals",
+                                "Operands": [
+                                    "Close_Intent"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "Type": "ConnectParticipantWithLexBot"
+            },
+            {
+                "Identifier": "0b2ac510-f213-4c3f-93ae-29b9d48a6a9e",
+                "Parameters": {
+                    "Text": "You need to take 1 dose now. Let me know once you\u2019ve taken it",
+                    "LexBot": {
+                        "Name": "Drug_Reminder_Bot",
+                        "Region": "us-east-1",
+                        "Alias": "live"
+                    }
+                },
+                "Transitions": {
+                    "NextAction": "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2",
+                    "Errors": [
+                        {
+                            "NextAction": "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2",
+                            "ErrorType": "NoMatchingError"
+                        },
+                        {
+                            "NextAction": "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2",
+                            "ErrorType": "NoMatchingCondition"
+                        }
+                    ],
+                    "Conditions": [
+                        {
+                            "NextAction": "5c06e0d7-a3c6-4341-b60f-c3694f6d86e2",
+                            "Condition": {
+                                "Operator": "Equals",
+                                "Operands": [
+                                    "Dose_Confirm"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "Type": "ConnectParticipantWithLexBot"
+            },
+            {
+                "Identifier": "8c076ca6-9d04-4a6f-b6b9-82bb3c7c9213",
+                "Parameters": {
+                    "Text": "It is a \n$.Attributes.Medicine_Size, round, $.Attributes.Medicine_Shape tablet, and it comes in a \n$.Attributes.Medicine_Location",
+                    "LexBot": {
+                        "Name": "Drug_Reminder_Bot",
+                        "Region": "us-east-1",
+                        "Alias": "live"
+                    }
+                },
+                "Transitions": {
+                    "NextAction": "0b2ac510-f213-4c3f-93ae-29b9d48a6a9e",
+                    "Errors": [
+                        {
+                            "NextAction": "0b2ac510-f213-4c3f-93ae-29b9d48a6a9e",
+                            "ErrorType": "NoMatchingError"
+                        },
+                        {
+                            "NextAction": "0b2ac510-f213-4c3f-93ae-29b9d48a6a9e",
+                            "ErrorType": "NoMatchingCondition"
+                        }
+                    ],
+                    "Conditions": [
+                        {
+                            "NextAction": "0b2ac510-f213-4c3f-93ae-29b9d48a6a9e",
+                            "Condition": {
+                                "Operator": "Equals",
+                                "Operands": [
+                                    "Dose_Quantity"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "Type": "ConnectParticipantWithLexBot"
+            },
+            {
+                "Identifier": "640e0a9a-361d-42bf-81f4-6f11457951ce",
+                "Parameters": {
+                    "FlowLoggingBehavior": "Enabled"
+                },
+                "Transitions": {
+                    "NextAction": "029a95d9-e2c5-46f2-9a53-dbc93077f922",
+                    "Errors": [],
+                    "Conditions": []
+                },
+                "Type": "UpdateFlowLoggingBehavior"
+            },
+            {
+                "Identifier": "029a95d9-e2c5-46f2-9a53-dbc93077f922",
+                "Parameters": {
+                    "Text": "Hi, I am your virtual healthcare assistant. I am calling you about your afternoon medication. Have you taken your medication yet?",
+                    "LexBot": {
+                        "Name": "Drug_Reminder_Bot",
+                        "Region": "us-east-1",
+                        "Alias": "live"
+                    }
+                },
+                "Transitions": {
+                    "NextAction": "8c076ca6-9d04-4a6f-b6b9-82bb3c7c9213",
+                    "Errors": [
+                        {
+                            "NextAction": "8c076ca6-9d04-4a6f-b6b9-82bb3c7c9213",
+                            "ErrorType": "NoMatchingError"
+                        },
+                        {
+                            "NextAction": "8c076ca6-9d04-4a6f-b6b9-82bb3c7c9213",
+                            "ErrorType": "NoMatchingCondition"
+                        }
+                    ],
+                    "Conditions": [
+                        {
+                            "NextAction": "8c076ca6-9d04-4a6f-b6b9-82bb3c7c9213",
+                            "Condition": {
+                                "Operator": "Equals",
+                                "Operands": [
+                                    "Dose_Appearance"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "Type": "ConnectParticipantWithLexBot"
+            }
+        ]
+    },
+    "Tags": {}
+}
