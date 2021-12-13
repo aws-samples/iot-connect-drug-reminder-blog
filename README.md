@@ -2,8 +2,7 @@
 
 This repository compliments the blogpost *How to build Drug Reminder service using Amazon IOT, Amazon Lex and Amazon
 Connect*
-
-** TODO ** URL to be provided soon
+[Link](https://aws.amazon.com/blogs/contact-center/build-a-drug-reminder-service-with-aws-iot-amazon-lex-and-amazon-connect/)
 
 ## About the blog
 
